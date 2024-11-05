@@ -1,0 +1,48 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    
+    # Install dependencies
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    
+    # Run tests
+    - name: Run unit tests
+      run: pytest test/test_model.py
+    
+    # Build Docker image
+    - name: Build Docker image
+      run: docker build -t your-dockerhub-username/mlops-linear-regression .
+
+    # Log in to Docker Hub
+    - name: Log in to Docker Hub
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    
+    # Push Docker image to Docker Hub
+    - name: Push Docker image
+      run: docker push your-dockerhub-username/mlops-linear-regression
+
+    # Deploy to Heroku
+    - name: Deploy to Heroku
+      run: |
+        heroku container:login
+        heroku container:push web --app your-heroku-app-name
+        heroku container:release web --app your-heroku-app-name
