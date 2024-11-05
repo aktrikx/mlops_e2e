@@ -1,20 +1,21 @@
 import joblib
 import numpy as np
+import pytest
 
-# Load the saved model
-model = joblib.load('model/linear_regression_model.pkl')
-
-def test_prediction():
-    # Test prediction for input value [6] -> should be close to [12]
-    input_data = np.array([6]).reshape(1, -1)
-    prediction = model.predict(input_data)
-    
-    # Use np.isclose to compare with a tolerance for floating-point errors
-    assert np.isclose(prediction[0], 12.), f"Expected 12, but got {prediction[0]}"
+def load_model():
+    return joblib.load('model/linear_regression_model.pkl')
 
 def test_model():
-    test_prediction()
-    print("All tests passed!")
+    model = load_model()
+    # Test a sample input
+    sample_input = np.array([[6]])  # Test input
+    prediction = model.predict(sample_input)
     
-if __name__ == "__main__":
-    test_model()
+    assert np.isclose(prediction[0], 12.0, atol=1e-5), f"Expected 12, but got {prediction[0]}"
+
+def test_prediction():
+    model = load_model()
+    sample_input = np.array([[5]])
+    prediction = model.predict(sample_input)
+    
+    assert np.isclose(prediction[0], 10.0, atol=1e-5), f"Expected 10, but got {prediction[0]}"
