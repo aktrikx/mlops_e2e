@@ -13,6 +13,7 @@ def test_model():
     
     # Use np.isclose to account for floating point precision issues
     assert np.isclose(prediction[0], 12.0, atol=1e-5), f"Expected 12, but got {prediction[0]}"
+    print("test_model passed!")
 
 def test_prediction():
     model = load_model()
@@ -21,3 +22,9 @@ def test_prediction():
     
     # Check if the prediction is close to 10.0
     assert np.isclose(prediction[0], 10.0, atol=1e-5), f"Expected 10, but got {prediction[0]}"
+    print("test_prediction passed!")
+
+# Optional: Running the tests
+if __name__ == "__main__":
+    pytest.main(["-v"])  # The -v flag makes pytest more verbose
+    print("All tests passed!")
