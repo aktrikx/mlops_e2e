@@ -1,15 +1,3 @@
-
-# ---
-
-# #### **e. `model/train.py` - Model Training Script**
-
-# This file contains the code to train the linear regression model and save it as a file (`linear_regression_model.pkl`).
-
-# 1. Create a folder called **`model/`**, and within it, create a file called **`train.py`**.
-# 2. Add the following code:
-
-# ```python
-
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
